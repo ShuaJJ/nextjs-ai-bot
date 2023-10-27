@@ -99,22 +99,3 @@ export async function getSharedChat(id: string) {
 
   return chat
 }
-
-export async function shareChat(chat: Chat) {
-  const session = await auth()
-
-  if (!session?.user?.id || session.user.id !== chat.userId) {
-    return {
-      error: 'Unauthorized'
-    }
-  }
-
-  const payload = {
-    ...chat,
-    sharePath: `/share/${chat.id}`
-  }
-
-  await kv.hmset(`chat:${chat.id}`, payload)
-
-  return payload
-}
